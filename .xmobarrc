@@ -1,0 +1,33 @@
+Config {
+	font = "xft:DejaVu Sans Mono:pixelsize=12",
+	bgColor = "#000000",
+	fgColor = "#4499dd",
+	--fgColor = "#2255FF",
+	lowerOnStart = True,
+	commands = [
+		Run MultiCpu ["-L", "15",
+					"-H", "60",
+					"--low", "green",
+					"--normal", "yellow",
+					"--high", "red",
+					"--width", "3",
+					"-t", "CPU: [<total0>]"
+					] 10,
+
+		Run Memory ["-L", "1000",
+					"-H", "2000",
+					"--low", "red",
+					"--normal", "yellow",
+					"--high", "green",
+					"-t", "RAM: [<free>M, (<rest>M)]"
+					] 10,
+
+		Run Com "sh" ["~/.mpdstatus.sh"] "mpd" 10,
+		Run Com "~/scripts/vol.sh" [] "vol" 1,
+		Run PipeReader "/home/rmendoza/.config/pianobar/nowplaying" "pianobar",
+		Run StdinReader,
+		Run Network "eth0" [] 10,
+		Run Date "%a %b %_d %Y %I:%M:%S %P" "date" 10
+	],
+	template = "%multicpu%, %memory% || %eth0% || %StdinReader% || %date% || %pianobar% || %vol%"
+}
